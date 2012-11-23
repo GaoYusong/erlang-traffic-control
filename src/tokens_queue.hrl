@@ -1,0 +1,1 @@
+-define(default_max_cps, 100).

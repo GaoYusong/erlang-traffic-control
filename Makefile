@@ -5,6 +5,6 @@ clean:
 	./rebar clean
 
 run:
-	@exec erl -pa ebin
+	@exec erl -pa ebin -s sr_simulate start
 
 

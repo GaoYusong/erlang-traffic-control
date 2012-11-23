@@ -3,15 +3,16 @@
 
 -behavior(gen_server).
 
+-include("tokens_queue.hrl").
+
 %% callback function
 -export([init/1, handle_call/3, handle_cast/2, 
 	handle_info/2, terminate/2, code_change/3]).
 
 %% api
--export([start_link/0, start_link/1, set_max_cps/1, set_cps_interval/1, set_add_tokens_interval/1,
-	request_tokens/0, i/0, infos/0]).
+-export([start_link/0, start_link/1, set_max_cps/2, set_cps_interval/2, set_add_tokens_interval/2,
+	request_tokens/1, i/1, infos/1]).
 
--define(default_max_cps, 100).
 %% count_cps_interval must be bigger than add_tokens_interval
 -define(count_cps_interval, 2000).
 -define(add_tokens_interval, 100).
@@ -25,25 +26,25 @@ start_link() ->
 	start_link(?default_max_cps).
 
 start_link(MAXCPS) ->
-    gen_server:start_link({local, ?MODULE}, ?MODULE, [MAXCPS], []).
+    gen_server:start_link(?MODULE, [MAXCPS], []).
 
-set_max_cps(MAXCPS) ->
-	gen_server:call(?MODULE, {set_max_cps, MAXCPS}).
+set_max_cps(Pid, MAXCPS) ->
+	gen_server:call(Pid, {set_max_cps, MAXCPS}).
 
-set_cps_interval(CountCpsInterval) ->
-	gen_server:call(?MODULE, {set_cps_interval, CountCpsInterval}).
+set_cps_interval(Pid, CountCpsInterval) ->
+	gen_server:call(Pid, {set_cps_interval, CountCpsInterval}).
 
-set_add_tokens_interval(AddTokensInterval) ->
-	gen_server:call(?MODULE, {set_add_tokens_interval, AddTokensInterval}).
+set_add_tokens_interval(Pid, AddTokensInterval) ->
+	gen_server:call(Pid, {set_add_tokens_interval, AddTokensInterval}).
 
-i() ->
-	gen_server:call(?MODULE, i).
+i(Pid) ->
+	gen_server:call(Pid, i).
 
-infos() ->
-	gen_server:call(?MODULE, infos).
+infos(Pid) ->
+	gen_server:call(Pid, infos).
 
-request_tokens() ->
-	gen_server:call(?MODULE, request_tokens).
+request_tokens(Pid) ->
+	gen_server:call(Pid, request_tokens).
 
 init([MAXCPS]) ->
 	{ok, #state{
@@ -63,7 +64,7 @@ handle_call(i, _From, State) ->
 	{reply, State, State, get_time_left(State)};
 
 handle_call(infos, _From, State) ->
-	Infos = get_infos_from_state(State),
+	Infos = sr_simulate_lib:get_infos_from_state(State, ?state_tuple),
 	{reply, Infos, State, get_time_left(State)};
 
 handle_call({set_max_cps, MAXCPS}, _From, State = #state{add_tokens_interval = AddTokensInterval}) ->
@@ -88,8 +89,8 @@ handle_call(request_tokens, _From, State = #state{cps_count = CpsCount, count = 
 				State#state.add_tokens_interval}
 	end.
 
-handle_cast(Event, State) ->
-    {noreply, {unknown_cast, Event}, State}.
+handle_cast(_Event, State) ->
+    {noreply, State}.
 
 handle_info(timeout, State) ->
 	State1 = add_tokens(State),
@@ -132,17 +133,10 @@ add_tokens(State = #state{cps_count = CpsCount, cps_start_time = CpsStartTime,
 	State1 = case  Interval >= CountCpsInterval of
 		true ->
 			NowCps = CpsCount / Interval * 1000,
-			io:format("Current cps is ~p~n", [NowCps]),
+			% io:format("Current cps is ~p~n", [NowCps]),
 			State0#state{cps = NowCps, cps_count = 0, cps_start_time = get_now_time()};
 		false ->
 			State0
 	end,
 	State1.
 
-get_infos_from_state(State) ->
-	{_, Infos} = lists:foldl(
-		fun(Info, {Count, Result}) ->
-			{Count + 1, [{Info, element(Count + 1, State)} | Result]}
-		end,
-	{1, []}, tuple_to_list(?state_tuple)),
-	Infos.

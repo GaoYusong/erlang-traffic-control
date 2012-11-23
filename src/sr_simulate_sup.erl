@@ -24,5 +24,8 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+    {ok, { {one_for_one, 5, 10}, [
+    	?CHILD(tokens_queue_manager, worker),
+    	?CHILD(tokens_queue_sup, supervisor)
+    ]} }.
 
