@@ -63,11 +63,7 @@ handle_call(i, _From, State) ->
 	{reply, State, State, get_time_left(State)};
 
 handle_call(infos, _From, State) ->
-	{_, Infos} = lists:foldl(
-		fun(Info, {Count, Result}) ->
-			{Count + 1, [{Info, element(Count + 1, State)} | Result]}
-		end,
-	{1, []}, tuple_to_list(?state_tuple)),
+	Infos = get_infos_from_state(State),
 	{reply, Infos, State, get_time_left(State)};
 
 handle_call({set_max_cps, MAXCPS}, _From, State = #state{add_tokens_interval = AddTokensInterval}) ->
@@ -126,6 +122,9 @@ get_total_tokens(MaxCps, Interval) ->
 
 add_tokens(State = #state{cps_count = CpsCount, cps_start_time = CpsStartTime, 
 	count_cps_interval = CountCpsInterval}) ->
+
+	% io:format("Infos ~p NowTime ~p~n", [get_infos_from_state(State), get_now_time()]),
+
 	State0 = State#state{count = 0, start_time = get_now_time()},
 
 	Interval = get_now_time() - CpsStartTime,
@@ -139,3 +138,11 @@ add_tokens(State = #state{cps_count = CpsCount, cps_start_time = CpsStartTime,
 			State0
 	end,
 	State1.
+
+get_infos_from_state(State) ->
+	{_, Infos} = lists:foldl(
+		fun(Info, {Count, Result}) ->
+			{Count + 1, [{Info, element(Count + 1, State)} | Result]}
+		end,
+	{1, []}, tuple_to_list(?state_tuple)),
+	Infos.
