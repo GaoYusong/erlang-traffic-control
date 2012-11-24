@@ -10,7 +10,8 @@
 	handle_info/2, terminate/2, code_change/3]).
 
 %% api
--export([start_link/0, start_link/1, set_max_cps/2, 
+-export([start_link/0, start_link/1, 
+	set_max_cps/2, set_max_cps_cast/2,
 	% set_cps_interval/2, set_add_tokens_interval/2,
 	request_tokens/1, i/1, infos/1]).
 
@@ -35,6 +36,9 @@ start_link(MAXCPS) ->
 
 set_max_cps(Pid, MAXCPS) ->
 	gen_server:call(Pid, {set_max_cps, MAXCPS}).
+
+set_max_cps_cast(Pid, MAXCPS) ->
+	gen_server:cast(Pid, {set_max_cps_cast, MAXCPS}).
 
 % set_cps_interval(Pid, CountCpsInterval) ->
 % 	gen_server:call(Pid, {set_cps_interval, CountCpsInterval}).
@@ -101,6 +105,11 @@ handle_call(request_tokens, _From, State = #state{cps_count = CpsCount, count = 
 				State#state.add_tokens_interval}
 	end.
 
+handle_cast({set_max_cps_cast, MAXCPS}, State = #state{add_tokens_total = AddTokensTotal}) ->
+	State0 = State#state{max_cps = MAXCPS},
+	State1 = set_total_tokens(State0, MAXCPS, AddTokensTotal),
+	{noreply, State1, get_time_left(State)};
+
 handle_cast(_Event, State) ->
     {noreply, State}.
 
@@ -134,7 +143,7 @@ time_left(StartTime, Interval) ->
 % 	MaxCps * Interval div 1000.
 
 add_tokens(State 
-	% = #state{cps_count = CpsCount, cps_start_time = CpsStartTime, count_cps_interval = CountCpsInterval}
+		% = #state{cps_count = CpsCount, cps_start_time = CpsStartTime, count_cps_interval = CountCpsInterval}
 	) ->
 
 	% io:format("Infos ~p NowTime ~p~n", [sr_simulate_lib:get_infos_from_state(State, ?state_tuple), get_now_time()]),
