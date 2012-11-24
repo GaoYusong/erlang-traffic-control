@@ -1,0 +1,10 @@
+{application,sr_simulate,
+             [{description,[]},
+              {vsn,"1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{sr_simulate_app,[]}},
+              {env,[]},
+              {modules,[demo_worker,sr_simulate,sr_simulate_app,
+                        sr_simulate_lib,sr_simulate_sup,tokens_queue,
+                        tokens_queue_manager,tokens_queue_sup]}]}.

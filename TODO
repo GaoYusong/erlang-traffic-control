@@ -1,0 +1,2 @@
+1. tune the process of the calc total_tokens, when maxcps cannot be divided add_tokens_interval exactly.
+2. add a manager to auto manage new/delete tokens_queue, this will less the lack of processes compared with user manage tokens_queue himself.

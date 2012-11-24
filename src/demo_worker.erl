@@ -2,10 +2,12 @@
 
 -compile(export_all).
 
-start() ->
-	tokens_queue:start_link(),
+start(TokensId) ->
+	start(10000, TokensId).
+
+start(N, TokensId) ->
 	spawn(fun() ->
-		for(10000, fun() -> tokens_queue:request_tokens(), timer:sleep(1) end)
+		for(N, fun() -> tokens_queue_manager:request_tokens(TokensId) end)
 	end).
 
 for (0, _Func) ->
