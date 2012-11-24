@@ -121,22 +121,24 @@ time_left(StartTime, Interval) ->
 get_total_tokens(MaxCps, Interval) ->
 	MaxCps * Interval div 1000.
 
-add_tokens(State = #state{cps_count = CpsCount, cps_start_time = CpsStartTime, 
-	count_cps_interval = CountCpsInterval}) ->
+add_tokens(State 
+	% = #state{cps_count = CpsCount, cps_start_time = CpsStartTime, count_cps_interval = CountCpsInterval}
+	) ->
 
 	% io:format("Infos ~p NowTime ~p~n", [get_infos_from_state(State), get_now_time()]),
 
 	State0 = State#state{count = 0, start_time = get_now_time()},
 
-	Interval = get_now_time() - CpsStartTime,
+	% Interval = get_now_time() - CpsStartTime,
 
-	State1 = case  Interval >= CountCpsInterval of
-		true ->
-			NowCps = CpsCount / Interval * 1000,
-			% io:format("Current cps is ~p~n", [NowCps]),
-			State0#state{cps = NowCps, cps_count = 0, cps_start_time = get_now_time()};
-		false ->
-			State0
-	end,
+	% State1 = case  Interval >= CountCpsInterval of
+	% 	true ->
+	% 		NowCps = CpsCount / Interval * 1000,
+	% 		% io:format("Current cps is ~p~n", [NowCps]),
+	% 		State0#state{cps = NowCps, cps_count = 0, cps_start_time = get_now_time()};
+	% 	false ->
+	% 		State0
+	% end,
+	State1 = State0,
 	State1.
 
