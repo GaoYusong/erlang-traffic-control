@@ -1,0 +1,207 @@
+{ok, Id} = tokens_queue_manager:new_tokens_queue(),
+{ok, Pid} = tokens_queue_manager:get_pid(Id),
+demo_worker:start(100000000, Id),
+tokens_queue:infos(Pid).
+
+1.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 100),
+tokens_queue:infos(Pid).                
+
+Output:
+
+[{add_tokens_total,10},
+ {add_tokens_interval,100},
+ {start_time,1353875228771},
+ {set_add_tokens_total,10},
+ {set_add_tokens_interval,100},
+ {total_tokens_r_count,2},
+ {total_tokens_reminder,0},
+ {total_tokens_base,10},
+ {max_cps,100},
+ {total_tokens,10},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353875226852},
+ {cps_count,191},
+ {cps,99.00990099009901}]
+
+2.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 10),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,10},
+ {add_tokens_interval,100},
+ {start_time,1353875298158},
+ {set_add_tokens_total,10},
+ {set_add_tokens_interval,100},
+ {total_tokens_r_count,6},
+ {total_tokens_reminder,0},
+ {total_tokens_base,1},
+ {max_cps,10},
+ {total_tokens,1},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353875297552},
+ {cps_count,7},
+ {cps,9.900990099009901}]
+
+3.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 5),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,5},
+ {add_tokens_interval,200},
+ {start_time,1353875736151},
+ {set_add_tokens_total,5},
+ {set_add_tokens_interval,200},
+ {total_tokens_r_count,1},
+ {total_tokens_reminder,0},
+ {total_tokens_base,1},
+ {max_cps,5},
+ {total_tokens,1},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353875735548},
+ {cps_count,4},
+ {cps,4.975124378109452}]
+
+4.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 1),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,1},
+ {add_tokens_interval,1000},
+ {start_time,1353875807442},
+ {set_add_tokens_total,1},
+ {set_add_tokens_interval,1000},
+ {total_tokens_r_count,1},
+ {total_tokens_reminder,0},
+ {total_tokens_base,1},
+ {max_cps,1},
+ {total_tokens,1},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353875806441},
+ {cps_count,2},
+ {cps,0.999000999000999}]
+
+5.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 0),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,1},
+ {add_tokens_interval,1000},
+ {start_time,1353875865501},
+ {set_add_tokens_total,1},
+ {set_add_tokens_interval,1000},
+ {total_tokens_r_count,1},
+ {total_tokens_reminder,0},
+ {total_tokens_base,0},
+ {max_cps,0},
+ {total_tokens,0},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353875864500},
+ {cps_count,2},
+ {cps,0.999000999000999}]
+
+6.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 109),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,10},
+ {add_tokens_interval,100},
+ {start_time,1353875931768},
+ {set_add_tokens_total,10},
+ {set_add_tokens_interval,100},
+ {total_tokens_r_count,2},
+ {total_tokens_reminder,9},
+ {total_tokens_base,10},
+ {max_cps,109},
+ {total_tokens,11},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353875930657},
+ {cps_count,121},
+ {cps,107.92079207920791}]
+
+7.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 7),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,5},
+ {add_tokens_interval,200},
+ {start_time,1353876025760},
+ {set_add_tokens_total,5},
+ {set_add_tokens_interval,200},
+ {total_tokens_r_count,2},
+ {total_tokens_reminder,2},
+ {total_tokens_base,1},
+ {max_cps,7},
+ {total_tokens,2},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353876025559},
+ {cps_count,3},
+ {cps,6.965174129353234}]
+
+8.
+
+Input:
+
+tokens_queue:set_max_cps_cast(Pid, 3),
+tokens_queue:infos(Pid).
+
+Output:
+
+[{add_tokens_total,1},
+ {add_tokens_interval,1000},
+ {start_time,1353876100303},
+ {set_add_tokens_total,1},
+ {set_add_tokens_interval,1000},
+ {total_tokens_r_count,1},
+ {total_tokens_reminder,0},
+ {total_tokens_base,3},
+ {max_cps,3},
+ {total_tokens,3},
+ {count,1},
+ {count_cps_interval,2000},
+ {cps_start_time,1353876100303},
+ {cps_count,1},
+ {cps,2.997002997002997}]
+
+
+
