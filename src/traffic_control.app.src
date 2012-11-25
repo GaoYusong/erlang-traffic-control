@@ -1,7 +1,7 @@
 {application, traffic_control,
  [
-  {description, ""},
-  {vsn, "1"},
+  {description, "erlang traffic control"},
+  {vsn, "0.1.0"},
   {registered, []},
   {applications, [
                   kernel,
