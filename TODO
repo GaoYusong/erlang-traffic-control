@@ -1,3 +1,11 @@
-{complete!} 1. tune the process of the calc total_tokens, when maxcps cannot be divided add_tokens_interval exactly.
-2. add a manager to auto manage new/delete tokens_queue, this will less the lack of processes compared with user manage tokens_queue himself.
-3. add an adjust when maxcps less than add_tokens_total, for when maxcps < add_tokens_total, some total_tokens will be zero, this should be processed, but now the real maxcps will be add_tokens_total.
+{complete!} 
+1. tune the process of the calc total_tokens, when maxcps cannot be divided 
+   add_tokens_interval exactly.
+
+{maybe NP-Hard...}
+2. add a manager to auto manage new/delete tokens_queue, this will less the lack 
+   of processes compared with user manage tokens_queue himself.
+   
+3. add an adjust when maxcps less than add_tokens_total, for when 
+   maxcps < add_tokens_total, some total_tokens will be zero, this should be 
+   processed, but now the real maxcps will be add_tokens_total.

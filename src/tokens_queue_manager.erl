@@ -45,7 +45,7 @@ init([]) ->
 	}}.
 
 handle_call(infos, _From, State) ->
-	Infos = sr_simulate_lib:get_infos_from_state(State, ?state_tuple),
+	Infos = traffic_control_lib:get_infos_from_state(State, ?state_tuple),
 	{reply, Infos, State};
 
 handle_call({new_tokens_queue, MaxCps}, _From, State = #state{tq_pids = Pids, name_count = NameCount}) ->

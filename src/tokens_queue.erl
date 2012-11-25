@@ -79,7 +79,7 @@ handle_call(i, _From, State) ->
 	{reply, State, State, get_time_left(State)};
 
 handle_call(infos, _From, State) ->
-	Infos = sr_simulate_lib:get_infos_from_state(State, ?state_tuple),
+	Infos = traffic_control_lib:get_infos_from_state(State, ?state_tuple),
 	{reply, Infos, State, get_time_left(State)};
 
 handle_call({set_max_cps, MAXCPS}, _From, State = #state{add_tokens_total = AddTokensTotal}) ->
@@ -146,7 +146,7 @@ add_tokens(State
 		% = #state{cps_count = CpsCount, cps_start_time = CpsStartTime, count_cps_interval = CountCpsInterval}
 	) ->
 
-	% io:format("Infos ~p NowTime ~p~n", [sr_simulate_lib:get_infos_from_state(State, ?state_tuple), get_now_time()]),
+	% io:format("Infos ~p NowTime ~p~n", [traffic_control_lib:get_infos_from_state(State, ?state_tuple), get_now_time()]),
 
 	NowTime = get_now_time(),
 

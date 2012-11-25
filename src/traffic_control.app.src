@@ -1,0 +1,12 @@
+{application, traffic_control,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { traffic_control_app, []}},
+  {env, []}
+ ]}.
