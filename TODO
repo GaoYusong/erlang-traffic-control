@@ -12,3 +12,5 @@
    processed, but now the real maxcps will be add_tokens_total.
 
 4. add auto test framework for TestCase
+
+5. add more methods to request_tokens, the sleep don't adapt to all cases. 
