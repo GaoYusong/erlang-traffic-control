@@ -10,7 +10,9 @@
 	handle_info/2, terminate/2, code_change/3]).
 
 -export([start_link/0, infos/0, new_tokens_queue/0, new_tokens_queue/1,
-	get_pid/1, delete_tokens_queue/1, request_tokens/1]).
+	get_pid/1, delete_tokens_queue/1
+	% , request_tokens/1
+	]).
 
 -define(state_tuple, {tq_pids, name_count}).
 
@@ -35,8 +37,8 @@ delete_tokens_queue(Name) ->
 get_pid(Name) ->
 	gen_server:call(?MODULE, {get_pid, Name}).
 
-request_tokens(Name) ->
-	gen_server:call(?MODULE, {request_tokens, Name}).
+% request_tokens(Name) ->
+% 	gen_server:call(?MODULE, {request_tokens, Name}).
 
 init([]) ->
 	{ok, #state{
@@ -72,18 +74,18 @@ handle_call({delete_tokens_queue, Name}, _From, State = #state{tq_pids = Pids}) 
 			{error, Reason} ->
 				{error, Reason}
 		end,
-	{reply, Result, State};
-
-handle_call({request_tokens, Name}, _From, State = #state{tq_pids = Pids}) ->
-	Result = 
-		case do_get_pid(Pids, Name) of
-			{ok, Pid} ->
-				tokens_queue:request_tokens(Pid),
-				ok;
-			{error, Reason} ->
-				{error, Reason}
-		end,
 	{reply, Result, State}.
+
+% handle_call({request_tokens, Name}, _From, State = #state{tq_pids = Pids}) ->
+% 	Result = 
+% 		case do_get_pid(Pids, Name) of
+% 			{ok, Pid} ->
+% 				tokens_queue:request_tokens(Pid),
+% 				ok;
+% 			{error, Reason} ->
+% 				{error, Reason}
+% 		end,
+% 	{reply, Result, State}.
 
 handle_cast(_Event, State) ->
 	{noreply, State}.

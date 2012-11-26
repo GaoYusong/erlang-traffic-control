@@ -12,8 +12,10 @@
 %% api
 -export([start_link/0, start_link/1, 
 	set_max_cps/2, set_max_cps_cast/2,
+	set_callback_function/2,
 	% set_cps_interval/2, set_add_tokens_interval/2,
-	request_tokens/1, i/1, infos/1]).
+	request_tokens/1, request_tokens_cast/1, 
+	i/1, infos/1]).
 
 %% count_cps_interval must be bigger than add_tokens_interval
 -define(count_cps_interval, 2000).
@@ -57,7 +59,9 @@
 	max_cps, total_tokens_base, total_tokens_reminder, total_tokens_r_count,
 	set_add_tokens_interval, set_add_tokens_total,
 	%% current add_tokens interval control
-	start_time, add_tokens_interval, add_tokens_total}).
+	start_time, add_tokens_interval, add_tokens_total,
+	callback_function
+}).
 
 -record(state, ?state_tuple).
 
@@ -72,6 +76,9 @@ set_max_cps(Pid, MAXCPS) ->
 
 set_max_cps_cast(Pid, MAXCPS) ->
 	gen_server:cast(Pid, {set_max_cps_cast, MAXCPS}).
+
+set_callback_function(Pid, CallbackFunction) ->
+	gen_server:call(Pid, {set_callback_function, CallbackFunction}).
 
 % set_cps_interval(Pid, CountCpsInterval) ->
 % 	gen_server:call(Pid, {set_cps_interval, CountCpsInterval}).
@@ -88,6 +95,9 @@ infos(Pid) ->
 request_tokens(Pid) ->
 	gen_server:call(Pid, request_tokens).
 
+request_tokens_cast(Pid) ->
+	gen_server:cast(Pid, request_tokens_cast).
+
 %% important: double check every state has a initial value
 init([MAXCPS]) ->
 	State0 = 
@@ -96,7 +106,9 @@ init([MAXCPS]) ->
 			cps 					= 0,
 			cps_count 				= 0,
 			cps_start_time			= get_now_time(),
-			count_cps_interval		= ?count_cps_interval
+			count_cps_interval		= ?count_cps_interval,
+
+			callback_function 		= fun() -> ok end
 
 			%% for count, these will be set in add_tokens
 			% count 					= 0,
@@ -119,9 +131,13 @@ handle_call(infos, _From, State) ->
 	Infos = traffic_control_lib:get_infos_from_state(State, ?state_tuple),
 	{reply, Infos, State, get_time_left(State)};
 
+
 handle_call({set_max_cps, MAXCPS}, _From, State) ->
 	State0 = set_total_tokens(State, MAXCPS),
-	{reply, ok, State0, get_time_left(State)};
+	{reply, ok, State0, get_time_left(State0)};
+
+handle_call({set_callback_function, CallbackFunction}, _From, State) ->
+	{reply, ok, State#state{callback_function = CallbackFunction}, get_time_left(State)};
 
 % handle_call({set_cps_interval, CountCpsInterval}, _From, State) ->
 % 	{reply, ok, State#state{count_cps_interval = CountCpsInterval}, get_time_left(State)};
@@ -130,27 +146,25 @@ handle_call({set_max_cps, MAXCPS}, _From, State) ->
 % 	{reply, ok, State#state{add_tokens_interval = AddTokensInterval, 
 % 	total_tokens = get_total_tokens(MaxCps, AddTokensInterval)}, get_time_left(State)};
 
-handle_call(request_tokens, _From, State = #state{cps_count = CpsCount, count = Count, total_tokens = TotalTokens}) ->
-	case Count < TotalTokens of
-		true ->
-			{reply, ok, State#state{cps_count = CpsCount + 1, count = Count + 1}, get_time_left(State)};
-		false ->
-			timer:sleep(get_time_left(State)),
-			State1 = add_tokens(State),
-			{reply, ok, State1#state{cps_count = State1#state.cps_count + 1, count = State1#state.count + 1}, 
-				State#state.add_tokens_interval}
-	end.
+handle_call(request_tokens, _From, State) ->
+	{State1, TimeLeft} = do_request_tokens(State),
+	{reply, ok, State1, TimeLeft}.
 
 handle_cast({set_max_cps_cast, MAXCPS}, State) ->
 	State0 = set_total_tokens(State, MAXCPS),
-	{noreply, State0, get_time_left(State)};
+	{noreply, State0, get_time_left(State0)};
+
+handle_cast(request_tokens_cast, State = #state{callback_function = CallbackFunction}) ->
+	{State1, TimeLeft} = do_request_tokens(State),
+	CallbackFunction(),
+	{noreply, State1, TimeLeft};
 
 handle_cast(_Event, State) ->
     {noreply, State}.
 
 handle_info(timeout, State) ->
 	State1 = add_tokens(State),
-    {noreply, State1, State#state.add_tokens_interval}.
+    {noreply, State1, State1#state.add_tokens_interval}.
 
 terminate(_Reason, _State) ->
     ok.
@@ -259,3 +273,13 @@ calc_total_tokens(State = #state{
 		end,
 	State#state{total_tokens = TotalTokens, total_tokens_r_count = RCount0 + 1}.
 
+do_request_tokens(State = #state{cps_count = CpsCount, count = Count, total_tokens = TotalTokens}) ->
+	case Count < TotalTokens of
+		true ->
+			{State#state{cps_count = CpsCount + 1, count = Count + 1}, get_time_left(State)};
+		false ->
+			timer:sleep(get_time_left(State)),
+			State1 = add_tokens(State),
+			{State1#state{cps_count = State1#state.cps_count + 1, count = State1#state.count + 1}, 
+				State1#state.add_tokens_interval}
+	end.
