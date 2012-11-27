@@ -69,16 +69,16 @@
 start_link() ->
 	start_link(?default_max_cps).
 
-start_link(MAXCPS) ->
+start_link(MAXCPS) when is_integer(MAXCPS) andalso MAXCPS >= 0 ->
     gen_server:start_link(?MODULE, [MAXCPS], []).
 
-set_max_cps(Pid, MAXCPS) ->
+set_max_cps(Pid, MAXCPS) when is_integer(MAXCPS) andalso MAXCPS >= 0 ->
 	gen_server:call(Pid, {set_max_cps, MAXCPS}).
 
-set_max_cps_cast(Pid, MAXCPS) ->
+set_max_cps_cast(Pid, MAXCPS) when is_integer(MAXCPS) andalso MAXCPS >= 0->
 	gen_server:cast(Pid, {set_max_cps_cast, MAXCPS}).
 
-set_callback_function(Pid, CallbackFunction) ->
+set_callback_function(Pid, CallbackFunction) when is_function(CallbackFunction, 0) ->
 	gen_server:call(Pid, {set_callback_function, CallbackFunction}).
 
 % set_cps_interval(Pid, CountCpsInterval) ->
