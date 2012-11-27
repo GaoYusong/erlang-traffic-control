@@ -1,5 +1,4 @@
-{ok, Id} = tokens_queue_manager:new_tokens_queue(),
-{ok, Pid} = tokens_queue_manager:get_pid(Id),
+{ok, Pid} = tokens_queue_manager:new_tokens_queue(),
 demo_worker:start(100000000, Pid),
 tokens_queue:infos(Pid).
 
@@ -205,8 +204,7 @@ Output:
 
 
 
-{ok, Id} = tokens_queue_manager:new_tokens_queue(),
-{ok, Pid} = tokens_queue_manager:get_pid(Id),
+{ok, Pid} = tokens_queue_manager:new_tokens_queue(),
 demo_worker:start_with_callback(100000000, Pid),
 tokens_queue:infos(Pid),
 erlang:process_info(Pid, message_queue_len).
