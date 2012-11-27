@@ -5,33 +5,27 @@
 
 -export([init/1]).
 
--export([start_link/0, start_child/1, start_child/2, delete_child/1]).
+-export([start_link/0, start_child/0, start_child/1, delete_child/1]).
 
 
 start_link() ->
 	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-start_child(TokensQueueName) ->
-	do_start_child(TokensQueueName, []).
+start_child() ->
+	do_start_child([]).
 
-start_child(TokensQueueName, MaxCps) ->
-	do_start_child(TokensQueueName, [MaxCps]).
+start_child(MaxCps) ->
+	do_start_child([MaxCps]).
 
-delete_child(TokensQueueName) ->
-	case supervisor:terminate_child(?MODULE, TokensQueueName) of
-		ok -> 
-			supervisor:delete_child(?MODULE, TokensQueueName);
-		{error, Reason} ->
-			{error, Reason}
-	end.
+delete_child(Pid) ->
+	supervisor:terminate_child(?MODULE, Pid).
 
-do_start_child(TokensQueueName, Args) ->
-	Spec = {
-		TokensQueueName, {tokens_queue, start_link, Args},
-		permanent, 5000, worker, [tokens_queue]
-	},
-	supervisor:start_child(?MODULE, Spec).
+do_start_child(Args) ->
+	supervisor:start_child(?MODULE, Args).
 
 init([]) ->
-	RestartStategy = {one_for_one, 10, 10},
-	{ok, {RestartStategy, []}}.
+	RestartStategy = {simple_one_for_one, 0, 1},
+	{ok, {RestartStategy, [
+			{tokens_queue, {tokens_queue, start_link, []}, 
+			temporary, brutal_kill, worker, [tokens_queue]}
+		]}}.
