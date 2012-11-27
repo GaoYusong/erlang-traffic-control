@@ -60,7 +60,8 @@
 	set_add_tokens_interval, set_add_tokens_total,
 	%% current add_tokens interval control
 	start_time, add_tokens_interval, add_tokens_total,
-	callback_function
+	callback_function,
+	do_request_tokens_exception
 }).
 
 -record(state, ?state_tuple).
@@ -103,12 +104,13 @@ init([MAXCPS]) ->
 	State0 = 
 		#state{
 			%% for cps
-			cps 					= 0,
-			cps_count 				= 0,
-			cps_start_time			= get_now_time(),
-			count_cps_interval		= ?count_cps_interval,
+			cps 						= 0,
+			cps_count 					= 0,
+			cps_start_time				= get_now_time(),
+			count_cps_interval			= ?count_cps_interval,
 
-			callback_function 		= fun() -> ok end
+			callback_function 			= fun() -> ok end,
+			do_request_tokens_exception = undefined
 
 			%% for count, these will be set in add_tokens
 			% count 					= 0,
@@ -155,7 +157,22 @@ handle_cast({set_max_cps_cast, MAXCPS}, State) ->
 	{noreply, State0, get_time_left(State0)};
 
 handle_cast(request_tokens_cast, State = #state{callback_function = CallbackFunction}) ->
-	{State1, TimeLeft} = do_request_tokens(State),
+	{State1, TimeLeft} = 
+		%% this try catch is ungly, and lead to request_tokens is not same request_tokens_cast, but it will more safe, 
+		%% for when user call this function, he maybe want callback function wake up his process, if callback function
+		%% is not called, his process will be blocked forever if have not a timeout.
+		%% i hope can cancel this try catch safe, when it runs a long time, and not bugs 
+		%% @TODO: hope a more beautiful method 
+		try
+			do_request_tokens(State)
+		catch
+			Type : What ->
+				NowException = {Type, What, erlang:get_stacktrace()},
+				{State#state{
+					do_request_tokens_exception = 
+						get_first(State#state.do_request_tokens_exception, NowException)}, 
+					get_time_left(State)}
+		end,
 	CallbackFunction(),
 	{noreply, State1, TimeLeft};
 
@@ -282,4 +299,12 @@ do_request_tokens(State = #state{cps_count = CpsCount, count = Count, total_toke
 			State1 = add_tokens(State),
 			{State1#state{cps_count = State1#state.cps_count + 1, count = State1#state.count + 1}, 
 				State1#state.add_tokens_interval}
+	end.
+
+get_first(Pre, Now) ->
+	case Pre of
+		undefined ->
+			Now;
+		_ ->
+			Pre
 	end.
