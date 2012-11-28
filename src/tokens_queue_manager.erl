@@ -29,10 +29,13 @@ new_tokens_queue() ->
 	new_tokens_queue(?default_max_cps).
 
 new_tokens_queue(MaxCps) ->
-	gen_server:call(?MODULE, {new_tokens_queue, MaxCps}).
+	% gen_server:call(?MODULE, {new_tokens_queue, MaxCps}).
+	tokens_queue_sup:start_child(MaxCps).
 
 delete_tokens_queue(Pid) ->
-	gen_server:call(?MODULE, {delete_tokens_queue, Pid}).
+	% gen_server:call(?MODULE, {delete_tokens_queue, Pid}).
+	tokens_queue_sup:delete_child(Pid).
+
 
 % request_tokens(Name) ->
 % 	gen_server:call(?MODULE, {request_tokens, Name}).
