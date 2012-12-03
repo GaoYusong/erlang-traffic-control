@@ -47,6 +47,9 @@
 -define(add_tokens_interval_1, 1000).
 -define(add_tokens_total_1, 1).
 
+-define(add_tokens_interval_minus_1, 20).
+-define(add_tokens_total_minus_1, 50).
+
 %% end add_tokens configure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -256,15 +259,20 @@ set_total_tokens(State, MaxCps) ->
 	State0.
 
 get_set_add_tokens_info(MaxCps) ->
-	case MaxCps >= ?add_tokens_total of
+	case MaxCps >= ?add_tokens_total_minus_1 of
 		true ->
-			{?add_tokens_interval, ?add_tokens_total};
+			{?add_tokens_interval_minus_1, ?add_tokens_total_minus_1};
 		false ->
-			case MaxCps >= ?add_tokens_total_0 of
+			case MaxCps >= ?add_tokens_total of
 				true ->
-					{?add_tokens_interval_0, ?add_tokens_total_0};
+					{?add_tokens_interval, ?add_tokens_total};
 				false ->
-					{?add_tokens_interval_1, ?add_tokens_total_1}
+					case MaxCps >= ?add_tokens_total_0 of
+						true ->
+							{?add_tokens_interval_0, ?add_tokens_total_0};
+						false ->
+							{?add_tokens_interval_1, ?add_tokens_total_1}
+					end
 			end
 	end.
 
@@ -295,7 +303,7 @@ do_request_tokens(State = #state{cps_count = CpsCount, count = Count, total_toke
 		true ->
 			{State#state{cps_count = CpsCount + 1, count = Count + 1}, get_time_left(State)};
 		false ->
-			timer:sleep(get_time_left(State)),
+			timer:sleep(max(get_time_left(State) - 1, 0)),
 			State1 = add_tokens(State),
 			{State1#state{cps_count = State1#state.cps_count + 1, count = State1#state.count + 1}, 
 				State1#state.add_tokens_interval}
