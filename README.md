@@ -3,7 +3,7 @@
 
 [![Build Status](https://secure.travis-ci.org/GaoYusong/erlang-traffic-control.png?branch=master)](https://travis-ci.org/GaoYusong/erlang-traffic-control)
 
-a traffic control application written in erlang, you can use it to control the rate of flow.
+a traffic control application written in erlang, you can use it to control the rate of flow, now it is implemented by using token buckets algorithm.
 
 ## Unified MySQL Platform 
 -------------------------------
