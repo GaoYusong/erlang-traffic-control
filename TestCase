@@ -11,21 +11,23 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,10},
- {add_tokens_interval,100},
- {start_time,1353875228771},
- {set_add_tokens_total,10},
- {set_add_tokens_interval,100},
- {total_tokens_r_count,2},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,50},
+ {add_tokens_interval,20},
+ {start_time,1362666733642},
+ {set_add_tokens_total,50},
+ {set_add_tokens_interval,20},
+ {total_tokens_r_count,40},
  {total_tokens_reminder,0},
- {total_tokens_base,10},
+ {total_tokens_base,2},
  {max_cps,100},
- {total_tokens,10},
+ {total_tokens,2},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353875226852},
- {cps_count,191},
- {cps,99.00990099009901}]
+ {cps_start_time,1362666732522},
+ {cps_count,113},
+ {cps,100.0}]
 
 2.
 
@@ -36,21 +38,23 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,10},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,10},
  {add_tokens_interval,100},
- {start_time,1353875298158},
+ {start_time,1362666764142},
  {set_add_tokens_total,10},
  {set_add_tokens_interval,100},
- {total_tokens_r_count,6},
+ {total_tokens_r_count,3},
  {total_tokens_reminder,0},
  {total_tokens_base,1},
  {max_cps,10},
  {total_tokens,1},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353875297552},
- {cps_count,7},
- {cps,9.900990099009901}]
+ {cps_start_time,1362666762542},
+ {cps_count,17},
+ {cps,10.0}]
 
 3.
 
@@ -61,21 +65,23 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,5},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,5},
  {add_tokens_interval,200},
- {start_time,1353875736151},
+ {start_time,1362666794942},
  {set_add_tokens_total,5},
  {set_add_tokens_interval,200},
- {total_tokens_r_count,1},
+ {total_tokens_r_count,3},
  {total_tokens_reminder,0},
  {total_tokens_base,1},
  {max_cps,5},
  {total_tokens,1},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353875735548},
- {cps_count,4},
- {cps,4.975124378109452}]
+ {cps_start_time,1362666794542},
+ {cps_count,3},
+ {cps,5.0}]
 
 4.
 
@@ -86,9 +92,11 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,1},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,1},
  {add_tokens_interval,1000},
- {start_time,1353875807442},
+ {start_time,1362666818742},
  {set_add_tokens_total,1},
  {set_add_tokens_interval,1000},
  {total_tokens_r_count,1},
@@ -98,9 +106,9 @@ Output:
  {total_tokens,1},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353875806441},
- {cps_count,2},
- {cps,0.999000999000999}]
+ {cps_start_time,1362666818742},
+ {cps_count,1},
+ {cps,1.0}]
 
 5.
 
@@ -111,9 +119,11 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,1},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,1},
  {add_tokens_interval,1000},
- {start_time,1353875865501},
+ {start_time,1362666877742},
  {set_add_tokens_total,1},
  {set_add_tokens_interval,1000},
  {total_tokens_r_count,1},
@@ -123,9 +133,9 @@ Output:
  {total_tokens,0},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353875864500},
+ {cps_start_time,1362666876742},
  {cps_count,2},
- {cps,0.999000999000999}]
+ {cps,1.0}]
 
 6.
 
@@ -136,21 +146,23 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,10},
- {add_tokens_interval,100},
- {start_time,1353875931768},
- {set_add_tokens_total,10},
- {set_add_tokens_interval,100},
- {total_tokens_r_count,2},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,50},
+ {add_tokens_interval,20},
+ {start_time,1362666897162},
+ {set_add_tokens_total,50},
+ {set_add_tokens_interval,20},
+ {total_tokens_r_count,22},
  {total_tokens_reminder,9},
- {total_tokens_base,10},
+ {total_tokens_base,2},
  {max_cps,109},
- {total_tokens,11},
+ {total_tokens,2},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353875930657},
- {cps_count,121},
- {cps,107.92079207920791}]
+ {cps_start_time,1362666896742},
+ {cps_count,52},
+ {cps,109.0}]
 
 7.
 
@@ -161,9 +173,11 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,5},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,5},
  {add_tokens_interval,200},
- {start_time,1353876025760},
+ {start_time,1362666919922},
  {set_add_tokens_total,5},
  {set_add_tokens_interval,200},
  {total_tokens_r_count,2},
@@ -173,10 +187,9 @@ Output:
  {total_tokens,2},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353876025559},
- {cps_count,3},
- {cps,6.965174129353234}]
-
+ {cps_start_time,1362666918922},
+ {cps_count,8},
+ {cps,7.0}]
 8.
 
 Input:
@@ -186,9 +199,11 @@ tokens_queue:infos(Pid).
 
 Output:
 
-[{add_tokens_total,1},
+[{do_request_tokens_exception,undefined},
+ {callback_function,#Fun<tokens_queue.0.40847612>},
+ {add_tokens_total,1},
  {add_tokens_interval,1000},
- {start_time,1353876100303},
+ {start_time,1362666940322},
  {set_add_tokens_total,1},
  {set_add_tokens_interval,1000},
  {total_tokens_r_count,1},
@@ -198,9 +213,9 @@ Output:
  {total_tokens,3},
  {count,1},
  {count_cps_interval,2000},
- {cps_start_time,1353876100303},
- {cps_count,1},
- {cps,2.997002997002997}]
+ {cps_start_time,1362666939322},
+ {cps_count,4},
+ {cps,3.0}]
 
 
 
