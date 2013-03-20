@@ -14,7 +14,7 @@ It can be used by block or non-block your application, and you can find demo in 
     %% show status
     tokens_queue:infos(Pid).
 
-### Non-blocking
+### Non-block
     {ok, Pid} = tokens_queue_manager:new_tokens_queue(100),
     UserPid = demo_worker:start_with_callback(Pid).
     
@@ -29,4 +29,9 @@ This application is used in proxy module in [Unified MySQL Platform](http://blog
 ## Important
 
 If you want to use this application, please using branch stable.
+
+## TODO
+
+* Add a good tutorial.
+* Add a lisence file, maybe BSD like license is good choice.
 
