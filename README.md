@@ -59,9 +59,9 @@ It can be used by block or non-block your application, and you can find demo in 
 
 This application is used in proxy module in [Unified MySQL Platform](http://blog.yufeng.info/archives/2349) from taobao to control sql query per second.
 
-## Important
+## Notice
 
-If you want to use this application, please using branch stable.
+master branch is stable now, you can use it directly.
 
 ## TODO
 
