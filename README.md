@@ -8,7 +8,7 @@ A traffic control application written in erlang, you can use it to control the r
 ## Notice
 
 1. master branch is stable now, you can use it directly.
-2. the project has bean stable for two years running in our system
+2. the project has been stable for two years running in our system
 3. i wrote this project when i was an erlang learner, so the code style may be not good -:(
 
 ## Two ways to use it
