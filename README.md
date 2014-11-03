@@ -8,7 +8,8 @@ A traffic control application written in erlang, you can use it to control the r
 ## Notice
 
 1. master branch is stable now, you can use it directly.
-2. i wrote this project when i was an erlang learner, so the code style may be not good -:(
+2. the project has bean stable for two years running
+3. i wrote this project when i was an erlang learner, so the code style may be not good -:(
 
 ## Two ways to use it
 It can be used by block or non-block your application, and you can find demo in src/demo_worker.erl.
