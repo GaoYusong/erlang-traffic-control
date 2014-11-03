@@ -5,6 +5,11 @@ Erlang traffic control
 
 A traffic control application written in erlang, you can use it to control the rate of flow, now it is implemented by using token buckets algorithm.
 
+## Notice
+
+1. master branch is stable now, you can use it directly.
+2. i wrote this project when i was an erlang learner, so the code style may be not good -:(
+
 ## Two ways to use it
 It can be used by block or non-block your application, and you can find demo in src/demo_worker.erl.
 ### Block demo
@@ -58,10 +63,6 @@ It can be used by block or non-block your application, and you can find demo in 
 ## Unified MySQL Platform 
 
 This application is used in proxy module in [Unified MySQL Platform](http://blog.yufeng.info/archives/2349) from taobao to control sql query per second.
-
-## Notice
-
-master branch is stable now, you can use it directly.
 
 ## TODO
 
