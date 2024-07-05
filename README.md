@@ -1,19 +1,16 @@
-Erlang traffic control
-=============================
+# Erlang Traffic Control
 
-[![Build Status](https://travis-ci.org/GaoYusong/erlang-traffic-control.svg?branch=master)](https://travis-ci.org/GaoYusong/erlang-traffic-control)
-
-A traffic control application written in erlang, you can use it to control the rate of flow, now it is implemented by using token buckets algorithm.
+A traffic control library written in Erlang allows you to control the rate of flow using the token bucket algorithm.
 
 ## Notice
 
-1. master branch is stable now, you can use it directly.
-2. the project has been stable for two years running in our system
-3. i wrote this project when i was an erlang learner, so the code style may be not good -:(
+1. The project has been stable for two years, running reliably in our system.
+2. I wrote this project when I was an Erlang learner, so the code style may not be optimal...
 
-## Two ways to use it
-It can be used by block or non-block your application, and you can find demo in src/demo_worker.erl.
-### Block demo
+## Two Ways to Use It
+The library can be used in either blocking or non-blocking mode. You can find a demonstration in src/demo_worker.erl.
+
+### Blocking Demo
     start(Pid) ->
     start(1000000, Pid).
 
@@ -28,14 +25,14 @@ It can be used by block or non-block your application, and you can find demo in 
     	Func(),
     	for (N - 1, Func).
         
-### Run block demo
+### Running the Blocking Demo
     {ok, Pid} = tokens_queue_manager:new_tokens_queue(100),
     demo_worker:start(Pid).
     
     %% show status
     tokens_queue:infos(Pid).
 
-### Non-block demo
+### Non-Blocking Demo
     start_with_callback(Pid) ->
     spawn(fun() ->
     		Self = self(),
@@ -53,7 +50,7 @@ It can be used by block or non-block your application, and you can find demo in 
     			io:format("I am fine!~n"),
     			loop(Pid)
     	end.
-### Run non-block demo
+### Running the Non-Blocking Demo
     {ok, Pid} = tokens_queue_manager:new_tokens_queue(100),
     UserPid = demo_worker:start_with_callback(Pid).
     
@@ -63,10 +60,10 @@ It can be used by block or non-block your application, and you can find demo in 
 
 ## Unified MySQL Platform 
 
-This application is used in proxy module in [Unified MySQL Platform](http://blog.yufeng.info/archives/2349) from taobao to control sql query per second.
+This library is used in the proxy module of [Unified MySQL Platform](http://blog.yufeng.info/archives/2349) by Taobao to control SQL queries per second.
 
 ## TODO
 
-* Add a good tutorial.
-* Add a lisence file, maybe BSD like license is good choice.
+* Add a comprehensive tutorial.
+* Add a license file, preferably a BSD-like license.
 
